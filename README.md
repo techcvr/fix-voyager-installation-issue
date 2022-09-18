@@ -18,3 +18,30 @@ composer dump-autoload
 ```
 php artisan db:seed --class=VoyagerDatabaseSeeder
 ```
+
+
+## SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 1000 bytes 
+
+If you are using MariaDB or an older version of MySQL, you need to place this code in your app\Providers\AppServiceProvider.php:
+
+```
+use Illuminate\Support\Facades\Schema;
+
+public function boot()
+{
+    Schema::defaultStringLength(191);
+}
+```
+
+## Inside config/database.php, replace this line for mysql
+
+```
+'engine' => null',
+```
+### with
+
+```
+'engine' => 'InnoDB ROW_FORMAT=DYNAMIC',
+```
+
+### Instead of setting a limit on your string lenght.
